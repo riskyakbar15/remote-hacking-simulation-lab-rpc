@@ -222,8 +222,6 @@ Proyek ini dibuat hanya untuk tujuan pembelajaran. Sistem tidak dirancang untuk 
 
 Seluruh hasil scan merupakan data simulasi yang telah ditentukan di dalam kode server.
 
-## Kesimpulan
+---
 
-Proyek **Remote Hacking Simulation Lab RPC** menunjukkan implementasi sederhana konsep RPC dalam sistem terdistribusi. Melalui proyek ini, client dapat memanggil fungsi `scan()` yang berjalan di server dan menerima hasil scan simulasi.
-
-Dengan implementasi ini, mahasiswa dapat memahami konsep dasar komunikasi client-server, pemanggilan prosedur jarak jauh, request-response, dan simulasi layanan terdistribusi secara sederhana menggunakan Python.
+Made With ❤️ By [riskyakbar15](https://github.com/riskyakbar15) For Education.
