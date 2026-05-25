@@ -1,14 +1,17 @@
 # Remote Hacking Simulation Lab RPC
 
-Proyek ini merupakan implementasi sederhana **Remote Procedure Call (RPC)** menggunakan Python untuk mata kuliah **Sistem Terdistribusi**. Sistem ini dibuat sebagai simulasi laboratorium keamanan jaringan dengan fitur utama berupa **scan target** secara dummy/simulasi.
+Proyek ini merupakan implementasi sederhana **Remote Procedure Call (RPC)** menggunakan Python untuk mata kuliah **Sistem Terdistribusi**. Sistem ini dibuat sebagai simulasi laboratorium keamanan jaringan dengan berbagai fitur simulasi seperti **port scanning**, **brute force login**, dan **vulnerability checking**.
 
-> Catatan: Proyek ini tidak melakukan scanning jaringan secara nyata. Semua data target dan port bersifat simulasi agar aman digunakan untuk pembelajaran.
+> Catatan: Proyek ini tidak melakukan aksi peretasan atau scanning jaringan secara nyata. Semua data target dan hasil simulasi bersifat statis (dummy) agar aman digunakan untuk pembelajaran konsep RPC.
 
 ## Deskripsi Proyek
 
-**Remote Hacking Simulation Lab RPC** adalah aplikasi sederhana berbasis client-server yang memperlihatkan bagaimana client dapat memanggil fungsi yang berjalan di server menggunakan konsep RPC.
+**Remote Hacking Simulation Lab RPC** adalah aplikasi berbasis client-server yang mendemonstrasikan bagaimana client dapat memanggil berbagai fungsi keamanan yang berjalan di server secara remote menggunakan protokol XML-RPC.
 
-Pada proyek ini, client mengirim nama target ke server. Server kemudian menjalankan fungsi `scan()` dan mengembalikan hasil simulasi berupa daftar port terbuka pada target tersebut.
+Terdapat dua versi dalam proyek ini:
+
+1. **Versi Utama (`server.py` & `client.py`)**: Memiliki fitur lengkap dengan menu interaktif.
+2. **Versi Sederhana (`serverOneService.py` & `clientOneService.py`)**: Hanya memiliki satu fungsi (scan port) untuk pemahaman dasar.
 
 ## Tujuan Proyek
 
@@ -16,18 +19,17 @@ Tujuan dari proyek ini adalah:
 
 - Mengimplementasikan konsep Remote Procedure Call pada sistem terdistribusi.
 - Menunjukkan komunikasi antara client dan server menggunakan RPC.
-- Membuat simulasi scan target secara aman tanpa melakukan scanning jaringan asli.
+- Membuat simulasi aktivitas keamanan jaringan secara aman.
 - Memahami proses request dan response dalam sistem client-server.
 
 ## Fitur
 
-Fitur utama pada proyek ini adalah:
+Fitur-fitur utama yang tersedia pada versi lengkap:
 
-- Scan target secara simulasi.
-- Pemanggilan fungsi jarak jauh dari client ke server.
-- Data port dummy untuk beberapa target.
-- Response dalam bentuk data terstruktur.
-- Penanganan target yang tidak ditemukan.
+1. **Scan Port**: Simulasi pemindaian port terbuka pada target tertentu (node-1, node-2, node-3).
+2. **Brute Force Login Simulation**: Simulasi percobaan login dengan username dan password pada target.
+3. **Check Vulnerability**: Melihat kerentanan yang ada pada target berdasarkan basis data simulasi di server.
+4. **Get Attack Logs**: Mengambil catatan aktivitas (log) yang telah dilakukan selama sesi berjalan.
 
 ## Teknologi yang Digunakan
 
@@ -48,64 +50,54 @@ Karena menggunakan library bawaan Python, proyek ini tidak membutuhkan instalasi
 ```text
 remote-hacking-simulation-lab-rpc/
 │
-├── server.py
-├── client.py
-└── README.md
+├── server.py               # (Utama) Server dengan fitur lengkap
+├── client.py               # (Utama) Client dengan menu interaktif
+├── serverOneService.py      # (Simpel) Server dengan satu layanan scan
+├── clientOneService.py      # (Simpel) Client untuk satu layanan scan
+└── README.md               # Dokumentasi proyek
 ```
-
-Keterangan:
-
-- `server.py` berisi kode RPC server dan fungsi scan.
-- `client.py` berisi kode client untuk memanggil fungsi scan pada server.
-- `README.md` berisi dokumentasi proyek.
 
 ## Alur Sistem
 
-Alur kerja sistem adalah sebagai berikut:
+Alur kerja sistem (Versi Utama) adalah sebagai berikut:
 
 ```text
-Client
+Client (Menu)
   |
-  | Memanggil fungsi scan(target)
+  | Pilih Aksi (1-4)
   v
-RPC Server
+RPC Server (server.py)
   |
-  | Memproses target
+  | Mengeksekusi fungsi:
+  | - ScanPort(target)
+  | - BruteForceLogin(u, p, target)
+  | - CheckVulnerability(target)
+  | - GetAttackLogs()
   v
-Data Simulasi Port
+Data Simulasi (Target & Logs)
   |
-  | Mengirim hasil scan
+  | Mengirim respons (JSON/Struct)
   v
-Client menampilkan hasil
+Client menampilkan visualisasi hasil
 ```
 
 Penjelasan singkat:
 
 1. User menjalankan `client.py`.
-2. User memasukkan nama target, misalnya `node-1`.
-3. Client memanggil fungsi `scan()` pada server menggunakan RPC.
-4. Server memeriksa data target.
-5. Server mengembalikan hasil scan simulasi.
-6. Client menampilkan hasil scan ke terminal.
+2. User memilih aksi dari menu (misal: Scan Port).
+3. Client meminta input tambahan (misal: target `node-1`).
+4. Client memanggil fungsi yang sesuai pada server melalui protokol XML-RPC.
+5. Server memproses permintaan dan mengembalikan data terstruktur.
+6. Client menampilkan hasil simulasi ke terminal.
 
 ## Cara Menjalankan Proyek
 
-### 1. Clone atau Siapkan Folder Proyek
+### 1. Persiapan
 
-Buat folder proyek:
+Pastikan Anda sudah menginstal Python 3. Clone atau buat folder proyek dan pastikan file berikut tersedia:
 
-```bash
-mkdir remote-hacking-simulation-lab-rpc
-cd remote-hacking-simulation-lab-rpc
-```
-
-Masukkan file berikut ke dalam folder tersebut:
-
-```text
-server.py
-client.py
-README.md
-```
+- `server.py`
+- `client.py`
 
 ### 2. Jalankan Server
 
@@ -115,11 +107,11 @@ Buka terminal pertama, lalu jalankan:
 python server.py
 ```
 
-Jika berhasil, akan muncul output seperti berikut:
+Output jika berhasil:
 
 ```text
 RPC Server berjalan di http://localhost:8000
-Menunggu request scan dari client...
+Menunggu request dari client...
 ```
 
 ### 3. Jalankan Client
@@ -130,77 +122,68 @@ Buka terminal kedua, lalu jalankan:
 python client.py
 ```
 
-Kemudian masukkan target yang ingin di-scan.
+Anda akan disuguhkan menu interaktif untuk melakukan simulasi hacking.
 
-Target yang tersedia:
+### 4. Opsional: Versi Satu Layanan
 
-```text
-node-1
-node-2
-node-3
-```
+Jika ingin mencoba versi yang lebih sederhana, gunakan:
 
-Contoh input:
+- Terminal 1: `python serverOneService.py`
+- Terminal 2: `python clientOneService.py`
 
-```text
-Masukkan target yang ingin di-scan: node-1
-```
+## Contoh Output (Versi Utama)
 
-## Contoh Output
-
-Jika user memasukkan target `node-1`, maka output yang muncul adalah:
+### Simulasi Scan Port
 
 ```text
-=== Remote Hacking Simulation Lab RPC ===
-Target tersedia: node-1, node-2, node-3
-Masukkan target yang ingin di-scan: node-1
-
-=== Hasil Scan ===
-Target : node-1
-Waktu  : 2026-05-15 20:30:12
-Status : Scan simulasi berhasil
-
+=== Hasil Scan Port ===
+Status: Scan port berhasil
+Target: node-1
 Port terbuka:
 - 22 / SSH / open
 - 80 / HTTP / open
 - 443 / HTTPS / open
 ```
 
-Jika target tidak ditemukan, maka output yang muncul adalah:
+### Simulasi Log Aktivitas
 
 ```text
-=== Hasil Scan ===
-Target : node-10
-Waktu  : 2026-05-15 20:31:45
-Status : Target tidak ditemukan
-Tidak ada data port.
+=== Attack Logs ===
+- 2026-05-25 10:00:01 | ScanPort | node-1 | success
+- 2026-05-25 10:00:15 | BruteForceLogin | node-2 | failed
 ```
 
 ## Penjelasan Konsep RPC
 
 RPC atau **Remote Procedure Call** adalah mekanisme yang memungkinkan sebuah program memanggil fungsi atau prosedur yang berjalan di komputer atau proses lain seolah-olah fungsi tersebut berada di program lokal.
 
-Pada proyek ini, fungsi `scan()` berada di server. Namun, client dapat memanggil fungsi tersebut menggunakan:
+Pada proyek ini, fungsi `ScanPort()` berada di server. Namun, client dapat memanggil fungsi tersebut menggunakan:
 
 ```python
-result = server.scan(target)
+result = server.ScanPort(target)
 ```
 
 Meskipun terlihat seperti pemanggilan fungsi biasa, sebenarnya fungsi tersebut dijalankan di server melalui komunikasi jaringan.
 
 ## Bagian RPC pada Program
 
-Pada server, fungsi `scan()` didaftarkan sebagai fungsi RPC:
+Pada server, fungsi-fungsi didaftarkan agar bisa diakses oleh client:
 
 ```python
-server.register_function(scan, "scan")
+server.register_function(ScanPort, "ScanPort")
+server.register_function(BruteForceLogin, "BruteForceLogin")
 ```
 
 Pada client, fungsi tersebut dipanggil melalui objek `ServerProxy`:
 
 ```python
+result = server.ScanPort(target)
+result = server.BruteForceLogin(username, password, target)
+```
+
+```python
 server = ServerProxy("http://localhost:8000", allow_none=True)
-result = server.scan(target)
+result = server.ScanPort(target)
 ```
 
 Inilah bagian utama yang menunjukkan implementasi RPC pada proyek ini.
@@ -209,12 +192,11 @@ Inilah bagian utama yang menunjukkan implementasi RPC pada proyek ini.
 
 Proyek ini memiliki beberapa batasan:
 
-- Hanya mendukung satu fitur, yaitu scan target.
-- Data target dan port masih bersifat dummy.
+- Data target dan port bersifat statis (dummy) di dalam kode server.
 - Tidak melakukan scanning jaringan nyata.
-- Belum menggunakan database.
-- Belum memiliki tampilan web atau dashboard.
-- Komunikasi masih berjalan pada localhost.
+- Belum menggunakan database untuk menyimpan log atau data target secara permanen.
+- Masih berupa aplikasi berbasis terminal (CLI).
+- Komunikasi RPC masih dikonfigurasi pada localhost (namun dapat dikembangkan ke jaringan nyata).
 
 ## Aspek Keamanan dan Etika
 
